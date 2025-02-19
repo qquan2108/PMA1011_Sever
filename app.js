@@ -4,9 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
+require('dotenv').config();
 
-var indexRouter = require('./routes/index');
-var hotelRouter = require('./routes/hotel');
+const userRoutes = require('./routes/userRoutes');
+const staffRoutes = require('./routes/staffRoutes');
+const roomRoutes = require('./routes/roomRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
+const promotionRoutes = require('./routes/promotionRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 var app = express();
 
@@ -24,8 +30,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/hotel', hotelRouter);
+app.use('/users', userRoutes);
+app.use('/staffs', staffRoutes);
+app.use('/rooms', roomRoutes);
+app.use('/bookings', bookingRoutes);
+app.use('/services', serviceRoutes);
+app.use('/promotions', promotionRoutes);
+app.use('/reports', reportRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
