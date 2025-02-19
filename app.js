@@ -28,9 +28,10 @@ app.use(cors({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-mongoose.connect('mongodb+srv://quantvqps39683:quocquan.2108@hotelmanager.p49jb.mongodb.net/?retryWrites=true&w=majority&appName=HotelManager/test')
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('>>>>>>>>>> DB Connected!!!!!!'))
   .catch(err => console.log('>>>>>>>>> DB Error: ', err));
+
   
 app.use(logger('dev'));
 app.use(express.json());
