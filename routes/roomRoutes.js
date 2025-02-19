@@ -12,6 +12,28 @@ router.get('/', async (req, res) => {
     }
   });
 
+router.post('/', async (req, res) => {
+    const { roomNumber, type, price, status, imageUrl } = req.body;
+    
+    // Kiểm tra nếu đã tồn tại phòng có cùng số phòng
+    const existingRoom = await Room.findOne({ roomNumber });
+    if (existingRoom) return res.status(400).json({ message: 'Phòng đã tồn tại' });
+
+    try {
+        const newRoom = await Room.create({
+            roomNumber,
+            type,
+            price,
+            status,
+            imageUrl
+        });
+        
+        res.status(201).json(newRoom);
+    } catch (error) {
+        res.status(500).json({ message: 'Lỗi khi tạo phòng' });
+    }
+});
+
 // [RQ03] Xem thông tin phòng
 router.get('/:id', async (req, res) => {
     const room = await Room.findById(req.params.id);

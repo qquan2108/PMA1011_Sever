@@ -15,6 +15,14 @@ const promotionRoutes = require('./routes/promotionRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 
 var app = express();
+var cors = require('cors');
+
+app.use(cors({
+  origin: '*', // Chấp nhận mọi nguồn gốc (không an toàn)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
