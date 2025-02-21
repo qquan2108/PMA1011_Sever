@@ -5,6 +5,15 @@ const User = require('../model/userModel');
 
 const router = express.Router();
 
+
+router.get('/layttnv', async (req, res) => {
+    try {
+        const staffs = await Staff.find();
+        res.json(staffs);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi lấy danh sách nhân viên", error: error.message });
+    }
+});
 // [RQ20] Quản lý nhân viên
 router.post('/add', async (req, res) => {
     const { name, email, position } = req.body;
