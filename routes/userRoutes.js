@@ -4,6 +4,17 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 
 const router = express.Router();
+// [RQ03] Lấy danh sách tất cả người dùng
+router.get('/ttusers', async (req, res) => {
+  try {
+      const users = await User.find().select('-password'); // Loại bỏ mật khẩu để bảo mật
+      res.json(users);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+  }
+});
+
 
 // [RQ01] Đăng ký người dùng
 router.post('/register', async (req, res) => {
