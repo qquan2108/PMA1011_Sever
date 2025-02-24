@@ -15,6 +15,39 @@ router.get('/ttusers', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+      const { name, email, password } = req.body;
+      let updateData = { name, email };
+
+      // Nếu có password, mã hóa trước khi cập nhật
+      if (password) {
+          const salt = await bcrypt.genSalt(10);
+          updateData.password = await bcrypt.hash(password, salt);
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(req.params.id, updateData, { new: true });
+      if (!updatedUser) return res.status(404).json({ message: "Người dùng không tồn tại" });
+      
+      res.json({ message: "Cập nhật thành công", user: updatedUser });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Lỗi máy chủ" });
+  }
+});
+
+// [RQ04] Xóa người dùng
+router.delete('/:id', async (req, res) => {
+  try {
+      const deletedUser = await User.findByIdAndDelete(req.params.id);
+      if (!deletedUser) return res.status(404).json({ message: "Người dùng không tồn tại" });
+      
+      res.json({ message: "Xóa người dùng thành công" });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Lỗi máy chủ" });
+  }
+});
 
 // [RQ01] Đăng ký người dùng
 router.post('/register', async (req, res) => {
